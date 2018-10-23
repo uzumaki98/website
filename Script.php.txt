@@ -1,0 +1,40 @@
+//author- Tushar Dohroo
+//purpose- This script is entering the data into the database from a html form
+
+
+
+<?php
+
+try
+  {
+    $conn = new PDO("sqlsrv:server = tcp:dohroo98.database.windows.net,1433; Database = userdata", "dohroo98", "Never.give/up");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  }
+catch(PDOException $e)
+   {
+     Print("$e");
+   }
+
+print("Check point 1");
+
+$roll=$_POST["rollno"];
+$fname=$_POST["fsname"];
+$lname=$_POST["lsname"];
+$cgpa=$_POST["gpa"];
+$Major=$_POST["major"];
+print("Check point 2");
+$data=[
+ 'r'=>$roll,
+ 'f'=>$fname,
+ 'l'=>$lname,
+ 'c'=>$cgpa,
+ 'm'=>$Major,
+];
+
+$sql="insert into userdata(rollno,firstname,lastname,GPA,major) values(:r,:f,:l,:c,:m);";
+
+$smt=$conn->prepare($sql);
+print("Check point 3");
+$smt->execute($data);
+
+?>
